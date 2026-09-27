@@ -11,25 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Recuperer le code
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Installer Flutter
+      - name: Install Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
 
-      - name: Creer la structure Flutter
-        run: flutter create .
+      - name: Create Flutter structure
+        run: flutter create --project-name viral_booster .
 
-      - name: Installer les dependances
+      - name: Install dependencies
         run: flutter pub get
 
-      - name: Analyser le projet
+      - name: Analyze project
         run: flutter analyze
 
-      - name: Construire l'application Web
+      - name: Build Web app
         run: flutter build web --release
 
-      - name: Construire l'application Android
+      - name: Build Android app
         run: flutter build apk --release
