@@ -20,7 +20,7 @@ jobs:
           channel: stable
 
       - name: Create Flutter structure
-        run: flutter create --project-name viral_booster .
+        run: flutter create --project-name viral_booster
 
       - name: Install dependencies
         run: flutter pub get
