@@ -1,10 +1,7 @@
-name: Flutter Build
+name: Génération Flutter
 
 on:
   push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
   workflow_dispatch:
 
 jobs:
@@ -13,18 +10,25 @@ jobs:
 
     steps:
       - name: Récupérer le code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      - name: Installer Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
 
       - name: Installer Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+          cache: true
 
       - name: Créer la structure Flutter
         run: flutter create --project-name viral_booster .
 
       - name: Supprimer les tests par défaut
-        run: rm -rf test
+        run: rm -rf test/widget_test.dart
 
       - name: Installer les dépendances
         run: flutter pub get
@@ -37,3 +41,24 @@ jobs:
 
       - name: Construire l'application Android
         run: flutter build apk --release
+
+      - name: Construire le AAB Android
+        run: flutter build appbundle --release
+
+      - name: Envoyer l'APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Envoyer le AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: viral-booster-aab
+          path: build/app/outputs/bundle/release/app-release.aab
+
+      - name: Envoyer la version Web
+        uses: actions/upload-artifact@v4
+        with:
+          name: web-build
+          path: build/web
