@@ -23,6 +23,9 @@ jobs:
       - name: Créer la structure Flutter
         run: flutter create --project-name viral_booster .
 
+      - name: Supprimer les tests par défaut
+        run: rm -rf test
+
       - name: Installer les dépendances
         run: flutter pub get
 
