@@ -1,0 +1,36 @@
+name: Flutter Build
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Créer la structure Flutter
+        run: flutter create --project-name viral_booster .
+
+      - name: Installer les dépendances
+        run: flutter pub get
+
+      - name: Analyser le projet
+        run: flutter analyze
+
+      - name: Construire l'application Web
+        run: flutter build web --release
+
+      - name: Construire l'application Android
+        run: flutter build apk --release
